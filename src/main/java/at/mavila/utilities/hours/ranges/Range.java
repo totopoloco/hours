@@ -16,6 +16,6 @@ import lombok.With;
 public class Range {
   private final LocalTime start;
   private final LocalTime end;
-  private BigDecimal totalHours;
-  private CharSequence hoursMinutesFormatted;
+  private final BigDecimal totalHours;
+  private final CharSequence hoursMinutesFormatted;
 }
