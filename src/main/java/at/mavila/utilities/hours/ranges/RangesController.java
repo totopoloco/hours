@@ -1,5 +1,7 @@
 package at.mavila.utilities.hours.ranges;
 
+import static java.util.Objects.nonNull;
+
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -7,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,18 +19,18 @@ public class RangesController {
   private final RangesCalculator rangesCalculator;
   private final TimeRandomizer timeRandomizer;
 
-  @GetMapping("/ranges")
-  public ResponseEntity<String> getRanges() {
+  @GetMapping("/ranges/{minutesOfLunchBreak}")
+  public ResponseEntity<String> getRanges(@PathVariable(name = "minutesOfLunchBreak") Integer minutesOfLunchBreak) {
     int entry = this.timeRandomizer.randomizeEntry();
     int entryMinute = this.timeRandomizer.randomizeMinuteInHour();
     int lunch = this.timeRandomizer.randomizeLunchBreakStart();
     int lunchMinute = this.timeRandomizer.randomizeMinuteInHour();
-
+    LocalTime lunchBreakStart = LocalTime.of(lunch, lunchMinute);
     List<Range> ranges = this.rangesCalculator.rangeCalculator(
         LocalTime.of(entry, entryMinute),
-        LocalTime.of(lunch, lunchMinute),
+        lunchBreakStart,
         462,
-        30,
+        getMinutesOfLunchBreakParameter(minutesOfLunchBreak),
         240,
         30
     );
@@ -55,8 +58,12 @@ public class RangesController {
 
     return ResponseEntity.ok(
         stringBuilder + " Total hours: " + TimeUtilities.convertFromMinutesToHours(totalMinutes) + "\n Total hours (hh:mm): " +
-        hours + ":" + minutes);
+        hours + ":" + minutes + "\n Expected lunch time: " + lunchBreakStart);
 
+  }
+
+  private static int getMinutesOfLunchBreakParameter(Integer minutesOfLunchBreak) {
+    return nonNull(minutesOfLunchBreak) ? minutesOfLunchBreak : 30;
   }
 
 }

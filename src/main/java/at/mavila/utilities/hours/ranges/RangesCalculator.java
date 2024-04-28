@@ -24,6 +24,7 @@ public class RangesCalculator {
     long minutesLeft = minutesPerDayOfWork;
     LocalTime start = entry;
     LocalTime endOfLunchBreak = lunchBreakStart.plusMinutes(minutesOfLunchBreak);
+    LocalTime adjustedLunchBreakStart = lunchBreakStart;
     while (minutesLeft > 0) {
 
       LocalTime end = start.plusMinutes(Math.min(minutesLeft, maximumMinutesInARow));
@@ -32,6 +33,13 @@ public class RangesCalculator {
       long minutesWorked = ChronoUnit.MINUTES.between(start, end);
       minutesLeft -= minutesWorked;
       ranges.add(createRange(start, end));
+
+      // Check if the worker has already worked for maximumMinutesInARow and adjust the lunch break start time if necessary
+      if (minutesWorked >= maximumMinutesInARow && end.isBefore(adjustedLunchBreakStart)) {
+        adjustedLunchBreakStart = end;
+        endOfLunchBreak = adjustedLunchBreakStart.plusMinutes(minutesOfLunchBreak);
+      }
+
       start = calculateNewStart(minutesOfBreakBetweenRanges, end, endOfLunchBreak);
     }
 
