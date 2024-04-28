@@ -1,7 +1,5 @@
 package at.mavila.utilities.hours.ranges;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -29,27 +27,57 @@ public class RangesCalculator {
     while (minutesLeft > 0) {
 
       LocalTime end = start.plusMinutes(Math.min(minutesLeft, maximumMinutesInARow));
-
-      if (end.isAfter(lunchBreakStart) && start.isBefore(endOfLunchBreak)) {
-        end = lunchBreakStart;
-      }
+      end = adjustEndIfNecessary(lunchBreakStart, end, start, endOfLunchBreak);
 
       long minutesWorked = ChronoUnit.MINUTES.between(start, end);
       minutesLeft -= minutesWorked;
-
-      BigDecimal totalHours = BigDecimal.valueOf(minutesWorked).divide(BigDecimal.valueOf(60), 2, RoundingMode.HALF_UP);
-      CharSequence hoursMinutesFormatted =
-          String.format("%02d:%02d", totalHours.intValue(),
-              totalHours.remainder(BigDecimal.ONE).multiply(BigDecimal.valueOf(60)).intValue());
-      ranges.add(new Range(start, end, totalHours, hoursMinutesFormatted));
-
-      start = end.plusMinutes(minutesOfBreakBetweenRanges);
-      if (start.isBefore(endOfLunchBreak)) {
-        start = endOfLunchBreak;
-      }
+      ranges.add(createRange(start, end));
+      start = calculateNewStart(minutesOfBreakBetweenRanges, end, endOfLunchBreak);
     }
 
     return ranges;
 
+  }
+
+  /**
+   * Adjusts the end time if necessary.
+   * If the end time is after the lunch break start and the start time is before the end of the lunch break,
+   * the end time is adjusted to the lunch break start.
+   *
+   * @param lunchBreakStart the start time of the lunch break
+   * @param end             the end time of the range
+   * @param start           the start time of the range
+   * @param endOfLunchBreak the end time of the lunch break
+   * @return the adjusted end time
+   */
+  private static LocalTime adjustEndIfNecessary(LocalTime lunchBreakStart, LocalTime end, LocalTime start,
+                                                LocalTime endOfLunchBreak) {
+    if (end.isAfter(lunchBreakStart) && start.isBefore(endOfLunchBreak)) {
+      return lunchBreakStart;
+    }
+    return end;
+  }
+
+  /**
+   * Calculates the new start time for the next range.
+   *
+   * @param minutesOfBreakBetweenRanges the minutes of break between ranges
+   * @param end                         the end time of the previous range
+   * @param endOfLunchBreak             the end time of the lunch break
+   * @return the new start time
+   */
+  private static LocalTime calculateNewStart(long minutesOfBreakBetweenRanges, LocalTime end, LocalTime endOfLunchBreak) {
+    LocalTime start = end.plusMinutes(minutesOfBreakBetweenRanges);
+    if (start.isBefore(endOfLunchBreak)) {
+      return endOfLunchBreak;
+    }
+    return start;
+  }
+
+  private static Range createRange(LocalTime start, LocalTime end) {
+    return Range.builder()
+        .start(start)
+        .end(end)
+        .build();
   }
 }

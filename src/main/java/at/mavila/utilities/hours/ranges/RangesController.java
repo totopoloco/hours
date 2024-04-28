@@ -39,16 +39,23 @@ public class RangesController {
     final StringBuilder stringBuilder = new StringBuilder();
 
     ranges.forEach(range -> {
-      stringBuilder.append(range.getStart().toString());
-      stringBuilder.append(" - ");
-      stringBuilder.append(range.getEnd().toString());
-      stringBuilder.append(" ");
-      stringBuilder.append(range.getHoursMinutesFormatted());
+      LocalTime start = range.getStart();
+      LocalTime end = range.getEnd();
+      stringBuilder.append(start.toString());
+      stringBuilder.append("-");
+      stringBuilder.append(end.toString());
+      stringBuilder.append(" -> ");
+      stringBuilder.append(TimeUtilities.getDurationFormatted(start, end));
+      stringBuilder.append(" (");
+      stringBuilder.append(TimeUtilities.convertFromMinutesToHours(TimeUtilities.getDurationInMinutes(start, end)));
+      stringBuilder.append(")");
       stringBuilder.append("\n");
     });
 
 
-    return ResponseEntity.ok(stringBuilder + " Total minutes: " + totalMinutes + " Total hours: " + hours + ":" + minutes);
+    return ResponseEntity.ok(
+        stringBuilder + " Total hours: " + TimeUtilities.convertFromMinutesToHours(totalMinutes) + "\n Total hours (hh:mm): " +
+        hours + ":" + minutes);
 
   }
 
