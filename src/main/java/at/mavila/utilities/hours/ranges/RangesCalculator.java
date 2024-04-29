@@ -1,5 +1,6 @@
 package at.mavila.utilities.hours.ranges;
 
+import java.time.Instant;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class RangesCalculator {
       final long minutesOfLunchBreak,
       final long maximumMinutesInARow,
       final long minutesOfBreakBetweenRanges) {
+    log.info("Start at: {}", Instant.now());
 
     List<Range> ranges = new ArrayList<>();
 
@@ -43,6 +45,7 @@ public class RangesCalculator {
       start = calculateNewStart(minutesOfBreakBetweenRanges, end, endOfLunchBreak);
     }
 
+    log.info("End at: {}", Instant.now());
     return ranges;
 
   }
