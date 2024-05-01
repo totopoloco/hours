@@ -39,12 +39,8 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
-    - name: Build and push Docker image
-      run: ./gradlew jib --image=${{ secrets.DOCKER_HUB_USERNAME }}/hours:latest
-
-    - name: Build and push Docker image when release tag is pushed
-      if: github.event_name == 'release'
-      run: ./gradlew jib --image=${{ secrets.DOCKER_HUB_USERNAME }}/hours:${{ github.ref }}
+    - name: JIB container build and publish
+      run: ./gradlew jib
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
