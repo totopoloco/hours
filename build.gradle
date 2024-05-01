@@ -72,12 +72,9 @@ jib {
 
     to {
         image = 'totopo/hours'
-        tags = ["latest", "master-$commitHash"]
+        tags = ["latest"]
         auth {
-            def usernameStr = System.getenv('DOCKER_HUB_USERNAME')
-            //Prints the username to the console
-            println("Username: $usernameStr")
-            username = usernameStr ?: ''
+            username = System.getenv('DOCKER_HUB_USERNAME') ?: ''
             password = System.getenv('DOCKER_HUB_ACCESS_TOKEN') ?: ''
         }
     }
@@ -86,6 +83,7 @@ jib {
         mainClass = 'at.mavila.utilities.hours.ranges.Application'
         creationTime = 'USE_CURRENT_TIMESTAMP'
         ports = ['8384']
+        labels = ['commitHash': commitHash()]
     }
 
     pluginExtensions {
