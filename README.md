@@ -6,6 +6,11 @@ other territories where the daily work hours are different.
 
 The application uses Gradle as a build tool and it is containerized using Docker for easy distribution and deployment.
 
+## Prerequisites
+- Java 21 or higher
+- Gradle 8.7 or higher
+- (*Optional*) Docker 4.29 or higher
+
 ## Building the Project
 
 The project can be built using Gradle. If you have Gradle installed on your system, you can run the following command in
@@ -37,15 +42,13 @@ java -jar .\build\libs\hours.ranges-0.0.1-SNAPSHOT.jar
 
 ## Running the Application in Docker
 
-The application can also be run in a Docker container. To build the Docker image, you can use the following command:
-
-The latest version of the image is available on Docker Hub, so you can pull it directly from there:
+The application can also be run in a Docker container using the latest version of the image available on Docker Hub. If Docker is properly installed on your system, you can use the following command:
 
 ```shell
 docker run -d -p 8384:8384 totopo/hours:latest
 ```
 
-Or alternatively, a release version of the image can be built locally using the following command:
+Or alternatively, a release version of the image can be used like this:
 
 ```shell
 docker run -d -p 8384:8384 totopo/hours:1.0.1
