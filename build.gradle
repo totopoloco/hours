@@ -73,6 +73,13 @@ jib {
     to {
         image = 'totopo/hours'
         tags = ["latest", "master-$commitHash"]
+        auth {
+            def usernameStr = System.getenv('secrets.DOCKER_HUB_USERNAME')
+            //Prints the username to the console
+            println("Username: $usernameStr")
+            username = usernameStr ?: ''
+            password = System.getenv('secrets.DOCKER_HUB_ACCESS_TOKEN') ?: ''
+        }
     }
 
     container {
