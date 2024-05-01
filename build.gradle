@@ -61,7 +61,7 @@ def commitHash = { ->
         commandLine 'git', 'rev-parse', '--short', 'HEAD'
         standardOutput = stdout
     }
-    return stdout.toString().trim()
+    return stdout.toString().trim().toLowerCase()
 }
 
 jib {
