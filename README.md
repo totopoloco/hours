@@ -1,0 +1,1 @@
+This project calculates your daily work with random entry and lunch break, by default it considers 7.7 hours of work per day (for Austria), but can be adapted to other territories where the daily work hours are different.
