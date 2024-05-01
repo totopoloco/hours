@@ -78,7 +78,7 @@ curl -X GET -H "Pragma: no-cache" http://localhost:8384/ranges/30
 
 ### Output
 
-The output will be a JSON object with the following structure:
+The output will be a text with the following output:
 
 ```text
 08:46-12:38 -> 03:52 (3.87)
