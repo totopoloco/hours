@@ -1,6 +1,7 @@
 package at.mavila.utilities.hours.ranges;
 
-import java.time.Instant;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ public class RangesCalculator {
       final long minutesOfLunchBreak,
       final long maximumMinutesInARow,
       final long minutesOfBreakBetweenRanges) {
-    log.info("Start at: {}", Instant.now());
 
     List<Range> ranges = new ArrayList<>();
 
@@ -44,10 +44,7 @@ public class RangesCalculator {
 
       start = calculateNewStart(minutesOfBreakBetweenRanges, end, endOfLunchBreak);
     }
-
-    log.info("End at: {}", Instant.now());
     return ranges;
-
   }
 
   /**
@@ -91,4 +88,16 @@ public class RangesCalculator {
         .end(end)
         .build();
   }
+
+  @PreDestroy
+  public void destroy() {
+    log.info("RangesCalculator is being destroyed.");
+  }
+
+  @PostConstruct
+  public void init() {
+    log.info("RangesCalculator is being initialized.");
+  }
+
+
 }
