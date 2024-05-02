@@ -1,4 +1,4 @@
-## Project Overview
+# Project Overview
 
 This project is a Spring Boot application written in Java, which calculates daily work hours with random entry and lunch
 break times. By default, it considers 7.7 hours of work per day (as per Austrian regulations), but it can be adapted to
@@ -6,12 +6,12 @@ other territories where the daily work hours are different.
 
 The application uses Gradle as a build tool and it is containerized using Docker for easy distribution and deployment.
 
-## Prerequisites
+# Prerequisites
 - Java 21 or higher
 - Gradle 8.7 or higher
 - (*Optional*) Docker 4.29 or higher
 
-## Building the Project
+# Building the Project
 
 The project can be built using Gradle. If you have Gradle installed on your system, you can run the following command in
 the project's root directory:
@@ -26,7 +26,7 @@ If you do not have Gradle installed, you can use the Gradle Wrapper included in 
 ./gradlew bootJar
 ```
 
-## Running the Application
+# Running the Application
 
 The application can be run directly from the command line using the following command:
 
@@ -40,7 +40,7 @@ In Windows (Powershell), you can use the following command:
 java -jar .\build\libs\hours.ranges-0.0.1-SNAPSHOT.jar
 ```
 
-## Running the Application in Docker
+# Running the Application in Docker
 
 The application can also be run in a Docker container using the latest version of the image available on Docker Hub. If Docker is properly installed on your system, you can use the following command:
 
@@ -57,7 +57,7 @@ docker run -d -p 8384:8384 totopo/hours:1.0.1
 Check what is the latest version of the image on Docker
 Hub [here](https://hub.docker.com/repository/docker/totopo/hours/tags).
 
-## Using the Application
+# Using the Application
 
 The application exposes a REST API that can be accessed using a web browser or a REST client like Postman. The API has
 the following endpoints:
@@ -90,7 +90,7 @@ The output will be a text with the following output:
 
 Entry and lunch break times are randomly generated, so the output will be different each time you run the script.
 
-## For developers
+# For developers
 
 The project is structured in the following way:
 
@@ -98,15 +98,15 @@ The project is structured in the following way:
 - `src/main/resources`: Contains the application (to customize the port).
 - `src/test/java`: Contains the unit tests.
 
-### Code
+## Code
 
 The code is structured in the following way:
 
-### Packages
+## Packages
 
 - `at.mavila.utilities.hours.ranges`: The main package.
 
-### Classes
+## Classes
 
 - `Application.java`: The main class of the application.
 - `RangesController.java`: The controller class that exposes the REST API.
@@ -115,19 +115,16 @@ The code is structured in the following way:
 - `TimeUtilities.java`: The utility class for repetitive functions for conversion and formatting.
 - `Range.java`: The model class that represents a range of work hours.
 
-## How to contribute
+# How to contribute
 
 If you want to contribute to this project, you can fork the repository and create a pull request with your changes. I
 will review the changes and merge them if they are appropriate.
 
-## Future development
+# Future development
 
 It would be nice to have a front-end application that consumes the REST API and displays the work hours in a more
 user-friendly way. This could be a good opportunity to learn a front-end framework like Angular or React.
 
-## License
+# License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-
-
