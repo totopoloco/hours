@@ -23,6 +23,28 @@ public class RangesController {
   private static final ThreadLocal<DecimalFormat> DECIMAL_FORMAT = ThreadLocal.withInitial(() -> new DecimalFormat("0.00"));
 
   /**
+   * Get ranges with start lunch and minutes of lunch break.
+   *
+   * @param start               the start
+   * @param lunch               the lunch
+   * @param minutesOfLunchBreak the minutes of lunch break
+   * @return the ranges with start lunch and minutes of lunch break
+   */
+  @GetMapping("/rangesWithStartLunchAndMinutesOfLunchBreak/{start}/{lunch}/{minutesOfLunchBreak}")
+  public ResponseEntity<RangeResponse> getRangesWithStartLunchAndMinutesOfLunchBreak(
+      @PathVariable(name = "start") Integer start,
+      @PathVariable(name = "lunch") Integer lunch,
+      @PathVariable(name = "minutesOfLunchBreak") Integer minutesOfLunchBreak) {
+
+    return getRangeResponseResponseEntity(
+        minutesOfLunchBreak,
+        start,
+        this.timeRandomizer.randomizeMinuteInHour(),
+        LocalTime.of(lunch, this.timeRandomizer.randomizeMinuteInHour())
+    );
+  }
+
+  /**
    * Get ranges.
    *
    * @param minutesOfLunchBreak the minutes of lunch break
@@ -38,6 +60,11 @@ public class RangesController {
     int lunchMinute = this.timeRandomizer.randomizeMinuteInHour();
     LocalTime lunchBreakStart = LocalTime.of(lunch, lunchMinute);
 
+    return getRangeResponseResponseEntity(minutesOfLunchBreak, entry, entryMinute, lunchBreakStart);
+  }
+
+  private ResponseEntity<RangeResponse> getRangeResponseResponseEntity(Integer minutesOfLunchBreak, int entry, int entryMinute,
+                                                                       LocalTime lunchBreakStart) {
     //Calculate ranges
     List<Range> ranges = calculateRanges(minutesOfLunchBreak, entry, entryMinute, lunchBreakStart);
 
