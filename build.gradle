@@ -114,7 +114,7 @@ jib {
     extraDirectories.paths {
         path {
             setFrom(sourceSets.main.resources.srcDirs.find { it.name == 'resources' }.toString() + "/schemas/")
-            into = "/app/data/schemas"
+            into = "/app/schemas"
         }
     }
 }
