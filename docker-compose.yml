@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  hours:
+    image: totopo/hours:latest
+    restart: always
+    ports:
+      - "8384:8384"
+    volumes:
+      - ./data:/app/data
