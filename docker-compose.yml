@@ -1,7 +1,6 @@
-version: '3.8'
 services:
   hours:
-    image: totopo/hours:latest
+    image: totopo/hours:1.2
     restart: always
     ports:
       - "8384:8384"

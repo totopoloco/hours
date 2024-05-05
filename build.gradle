@@ -81,6 +81,12 @@ jib {
 
     from {
         image = 'eclipse-temurin:21'
+        platforms {
+            platform {
+                architecture = 'amd64'
+                os = 'linux'
+            }
+        }
     }
 
     to {
@@ -108,7 +114,7 @@ jib {
     extraDirectories.paths {
         path {
             setFrom(sourceSets.main.resources.srcDirs.find { it.name == 'resources' }.toString() + "/schemas/")
-            into = "/schemas"
+            into = "/app/data/schemas"
         }
     }
 }
