@@ -33,7 +33,9 @@ java -jar .\build\libs\hours.ranges-0.0.1-SNAPSHOT.jar
 ```
 
 # Running the Application in Docker
-The application can also be run in a Docker container using the latest version of the image available on Docker Hub. If Docker is properly installed on your system, you can use the following command:
+
+The application can also be run in a Docker container using the latest version of the image available on Docker Hub.
+If Docker is properly installed on your system, you can use the following command:
 ```shell
 docker run -d -p 8384:8384 totopo/hours:latest
 ```
@@ -41,6 +43,16 @@ Or alternatively, a release version of the image can be used like this:
 ```shell
 docker run -d -p 8384:8384 totopo/hours:1.0.1
 ```
+
+## Docker compose
+
+You can also use Docker Compose to run the application. The `docker-compose.yml` file is included in the project.
+To run the application using Docker Compose, you can use the following command:
+
+```shell
+docker compose up -d
+```
+
 Check what is the latest version of the image on Docker
 Hub [here](https://hub.docker.com/repository/docker/totopo/hours/tags).
 
