@@ -80,12 +80,12 @@ With extra parameters, you can specify the start time, the lunch break time, and
 In Windows (Powershell), you can use the following command:
 
 ```powershell
-.\getranges.ps1 30
+.\getranges.ps1 -b 30
 ```
 
 With extra parameters, you can specify the start time, the lunch break time, and the duration of the lunch break.
 ```powershell
-.\getranges.ps1 9 12 30
+.\getranges.ps1 -s 9 -l 12 -b 30
 ```
 Or use the command directly like this:
 ```shell
