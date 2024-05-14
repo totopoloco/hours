@@ -57,16 +57,12 @@ Check what is the latest version of the image on Docker
 Hub [here](https://hub.docker.com/repository/docker/totopo/hours/tags).
 
 # Using the Application
-The application exposes a REST API that can be accessed using a web browser or a REST client like Postman. The API has
-the following endpoints:
 
-- `/ranges/{lunch break in minutes}`: Calculates the range of work for the whole day.
-  Use the provided script to calculate the range of work for the whole day. The script will return the range of work for
-  the whole day in the format `HH:mm - HH:mm`.
-- `/rangesWithStartLunchAndMinutesOfLunchBreak/{start}/{lunch}/{minutesOfLunchBreak}`: Same as the previous endpoint,
-  but
-  you can specify the start time and the lunch break time and duration of the lunch break.
-  In UNIX systems, you can use the following command:
+The application exposes a REST API that can be accessed using a web browser or a REST client like Postman.
+The documentation for the REST API is deployed with the application and can be accessed at the following
+URL: [http://localhost:8384/api/swagger-ui/index.html](http://localhost:8384/api/swagger-ui/index.html).
+
+But in this project we provide a script that can be used to get the ranges of the day.
 ```shell
 ./getranges.sh
 ```
@@ -93,7 +89,7 @@ curl -X GET -H "Pragma: no-cache" http://localhost:8384/ranges/30
 ```
 
 ```shell
-curl -X GET -H "Pragma: no-cache" http://localhost:8384/rangesWithStartLunchAndMinutesOfLunchBreak/7/12/30
+curl -X GET -H "Pragma: no-cache" http://localhost:8384/rangesWith/7/12/30
 ```
 
 ### Output
@@ -105,24 +101,24 @@ The output will be a Json object with the following output:
   "rangeDetails": [
     {
       "range": {
-        "start": "09:06:00",
-        "end": "13:06:00"
+        "start": "2024-05-14T07:59:00",
+        "end": "2024-05-14T11:59:00"
       },
       "duration": "04:00",
-      "durationInHours": "4.00"
+      "durationInHours": 4.00
     },
     {
       "range": {
-        "start": "13:36:00",
-        "end": "17:18:00"
+        "start": "2024-05-14T12:29:00",
+        "end": "2024-05-14T16:11:00"
       },
       "duration": "03:42",
-      "durationInHours": "3.70"
+      "durationInHours": 3.70
     }
   ],
-  "totalHours": "7.70",
+  "totalHours": 7.70,
   "totalHoursInHHMM": "07:42",
-  "expectedLunchTimeInHHMM": "13:30"
+  "expectedLunchTimeInHHMM": "12:35"
 }
 ```
 Entry and lunch break times are randomly generated, so the output will be different each time you run the script.
