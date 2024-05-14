@@ -183,7 +183,7 @@ task updateSwaggerVersion {
         def content = swaggerFile.text
 
         // Replace the version in the swagger file with the commit hash
-        def updatedContent = content.replaceFirst(/version: "\d+\.\d+\.\d+"/, "version: \"${commitHashGrGit}\"")
+        def updatedContent = content.replaceFirst(/version: ".*?"/, "version: \"${commitHashGrGit}\"")
 
         // Write the updated content back to the swagger file
         swaggerFile.write(updatedContent, "UTF-8")
