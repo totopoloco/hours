@@ -191,5 +191,7 @@ task updateSwaggerVersion {
 }
 
 // Make sure the updateSwaggerVersion task runs before the build task
-build.dependsOn updateSwaggerVersion
+tasks.named('openApiGenerate').configure {
+    dependsOn updateSwaggerVersion
+}
 compileJava.dependsOn tasks.named('openApiGenerate')
