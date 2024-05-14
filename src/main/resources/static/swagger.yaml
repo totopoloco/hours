@@ -1,0 +1,121 @@
+openapi: 3.0.3
+servers:
+  - description: Localhost server
+    url: http://localhost:8384
+info:
+  title: Hours API
+  description: This API provides endpoints for managing hours
+  version: "<version>"
+  contact:
+    name: Marco T. Ávila Cerón
+    email: marcotavilac@pm.me
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+tags:
+  - name: hours
+    description: Operations about hours calculation
+paths:
+  /ranges/{breakInMinutes}:
+    get:
+      tags:
+        - hours
+      summary: Calculate hours given a break of minutes
+      description: Calculate hours given a break of minutes
+      operationId: rangesWithBreakInMinutes
+      parameters:
+        - name: breakInMinutes
+          in: path
+          description: The break in minutes
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: A single hours
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hours'
+        '404':
+          description: Hours not found
+  /rangesWith/{start}/{lunch}/{breakInMinutes}:
+    get:
+      tags:
+        - hours
+      summary: Calculate hours given a start, lunch and pause
+      description: Calculate hours given a start, lunch and pause
+      operationId: rangesWithStartLunchPause
+      parameters:
+        - name: start
+          in: path
+          description: The start time (only the hour)
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: lunch
+          in: path
+          description: The lunch time (onyl the hour)
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: breakInMinutes
+          in: path
+          description: The pause for lunch time in minutes
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: A single hours
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hours'
+        '404':
+          description: Hours not found
+components:
+  schemas:
+    Hours:
+      type: object
+      properties:
+        rangeDetails:
+          type: array
+          items:
+            type: object
+            properties:
+              range:
+                type: object
+                properties:
+                  start:
+                    type: string
+                    format: date-time
+                  end:
+                    type: string
+                    format: date-time
+                required:
+                  - start
+                  - end
+              duration:
+                type: string
+              durationInHours:
+                type: number
+            required:
+              - range
+              - duration
+              - durationInHours
+        totalHours:
+          type: number
+        totalHoursInHHMM:
+          type: string
+        expectedLunchTimeInHHMM:
+          type: string
+      required:
+        - rangeDetails
+        - totalHours
+        - totalHoursInHHMM
+        - expectedLunchTimeInHHMM

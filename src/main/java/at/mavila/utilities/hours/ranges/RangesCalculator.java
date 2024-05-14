@@ -1,8 +1,9 @@
 package at.mavila.utilities.hours.ranges;
 
+import at.mavila.hours.ranges.model.HoursRangeDetailsInnerRange;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,23 +14,23 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class RangesCalculator {
 
-  public List<Range> rangeCalculator(
-      final LocalTime entry,
-      final LocalTime lunchBreakStart,
+  public List<HoursRangeDetailsInnerRange> rangeCalculator(
+      final LocalDateTime entry,
+      final LocalDateTime lunchBreakStart,
       final long minutesPerDayOfWork,
       final long minutesOfLunchBreak,
       final long maximumMinutesInARow,
       final long minutesOfBreakBetweenRanges) {
 
-    List<Range> ranges = new ArrayList<>();
+    List<HoursRangeDetailsInnerRange> ranges = new ArrayList<>();
 
     long minutesLeft = minutesPerDayOfWork;
-    LocalTime start = entry;
-    LocalTime endOfLunchBreak = lunchBreakStart.plusMinutes(minutesOfLunchBreak);
-    LocalTime adjustedLunchBreakStart = lunchBreakStart;
+    LocalDateTime start = entry;
+    LocalDateTime endOfLunchBreak = lunchBreakStart.plusMinutes(minutesOfLunchBreak);
+    LocalDateTime adjustedLunchBreakStart = lunchBreakStart;
     while (minutesLeft > 0) {
 
-      LocalTime end = start.plusMinutes(Math.min(minutesLeft, maximumMinutesInARow));
+      LocalDateTime end = start.plusMinutes(Math.min(minutesLeft, maximumMinutesInARow));
       end = adjustEndIfNecessary(lunchBreakStart, end, start, endOfLunchBreak);
 
       long minutesWorked = ChronoUnit.MINUTES.between(start, end);
@@ -58,8 +59,10 @@ public class RangesCalculator {
    * @param endOfLunchBreak the end time of the lunch break
    * @return the adjusted end time
    */
-  private static LocalTime adjustEndIfNecessary(LocalTime lunchBreakStart, LocalTime end, LocalTime start,
-                                                LocalTime endOfLunchBreak) {
+  private static LocalDateTime adjustEndIfNecessary(LocalDateTime lunchBreakStart,
+                                                    LocalDateTime end,
+                                                    LocalDateTime start,
+                                                    LocalDateTime endOfLunchBreak) {
     if (end.isAfter(lunchBreakStart) && start.isBefore(endOfLunchBreak)) {
       return lunchBreakStart;
     }
@@ -74,19 +77,25 @@ public class RangesCalculator {
    * @param endOfLunchBreak             the end time of the lunch break
    * @return the new start time
    */
-  private static LocalTime calculateNewStart(long minutesOfBreakBetweenRanges, LocalTime end, LocalTime endOfLunchBreak) {
-    LocalTime start = end.plusMinutes(minutesOfBreakBetweenRanges);
+  private static LocalDateTime calculateNewStart(long minutesOfBreakBetweenRanges, LocalDateTime end,
+                                                 LocalDateTime endOfLunchBreak) {
+    LocalDateTime start = end.plusMinutes(minutesOfBreakBetweenRanges);
     if (start.isBefore(endOfLunchBreak)) {
       return endOfLunchBreak;
     }
     return start;
   }
 
-  private static Range createRange(LocalTime start, LocalTime end) {
-    return Range.builder()
-        .start(start)
-        .end(end)
-        .build();
+  private static HoursRangeDetailsInnerRange createRange(
+      final LocalDateTime start,
+      final LocalDateTime end) {
+
+    final HoursRangeDetailsInnerRange range = new HoursRangeDetailsInnerRange();
+    range.setStart(start);
+    range.setEnd(end);
+
+    return range;
+
   }
 
   @PreDestroy

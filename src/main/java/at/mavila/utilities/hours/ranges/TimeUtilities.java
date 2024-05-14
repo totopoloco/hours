@@ -2,7 +2,7 @@ package at.mavila.utilities.hours.ranges;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
@@ -15,6 +15,7 @@ public final class TimeUtilities {
     throw new IllegalStateException("TimeUtilities is forbidden to be instanced.");
   }
 
+
   /**
    * Calculates the duration in minutes between two LocalTime objects.
    *
@@ -22,7 +23,7 @@ public final class TimeUtilities {
    * @param end   the end time
    * @return the duration in minutes
    */
-  public static long getDurationInMinutes(LocalTime start, LocalTime end) {
+  public static long getDurationInMinutes(LocalDateTime start, LocalDateTime end) {
     //Validate the input for null values
     if (Objects.isNull(start)) {
       throw new IllegalArgumentException("The start time must not be null.");
@@ -40,7 +41,7 @@ public final class TimeUtilities {
    * @param end   the end time
    * @return the formatted duration
    */
-  public static String getDurationFormatted(LocalTime start, LocalTime end) {
+  public static String getDurationFormatted(LocalDateTime start, LocalDateTime end) {
     long duration = getDurationInMinutes(start, end);
     long hours = duration / 60;
     long minutes = duration % 60;

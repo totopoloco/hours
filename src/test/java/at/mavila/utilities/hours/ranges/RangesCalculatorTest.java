@@ -2,6 +2,9 @@ package at.mavila.utilities.hours.ranges;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import at.mavila.hours.ranges.model.HoursRangeDetailsInnerRange;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -32,20 +35,21 @@ class RangesCalculatorTest {
    */
   @Test
   void rangeCalculatorEvenly() {
-    List<Range> ranges =
+    LocalDate now = LocalDate.now();
+    List<HoursRangeDetailsInnerRange> ranges =
         this.rangesCalculator.rangeCalculator(
-            LocalTime.of(9, 0),
-            LocalTime.of(12, 51),
+            LocalDateTime.of(now, LocalTime.of(9, 0)),
+            LocalDateTime.of(now, LocalTime.of(12, 51)),
             462,
             60,
             240,
             30);
 
     assertThat(ranges).hasSize(2);
-    assertThat(ranges.get(0).getStart()).isEqualTo(LocalTime.of(9, 0));
-    assertThat(ranges.get(0).getEnd()).isEqualTo(LocalTime.of(12, 51));
-    assertThat(ranges.get(1).getStart()).isEqualTo(LocalTime.of(13, 51));
-    assertThat(ranges.get(1).getEnd()).isEqualTo(LocalTime.of(17, 42));
+    assertThat(ranges.get(0).getStart()).isEqualTo(LocalDateTime.of(now, LocalTime.of(9, 0)));
+    assertThat(ranges.get(0).getEnd()).isEqualTo(LocalDateTime.of(now, LocalTime.of(12, 51)));
+    assertThat(ranges.get(1).getStart()).isEqualTo(LocalDateTime.of(now, LocalTime.of(13, 51)));
+    assertThat(ranges.get(1).getEnd()).isEqualTo(LocalDateTime.of(now, LocalTime.of(17, 42)));
 
     //Assert that the total time worked is 462 minutes
     long totalMinutes = ranges.stream().mapToLong(range -> ChronoUnit.MINUTES.between(range.getStart(), range.getEnd())).sum();
@@ -55,20 +59,21 @@ class RangesCalculatorTest {
 
   @Test
   void rangeCalculatorEvenly2() {
-    List<Range> ranges =
+    LocalDate now = LocalDate.now();
+    List<HoursRangeDetailsInnerRange> ranges =
         this.rangesCalculator.rangeCalculator(
-            LocalTime.of(9, 0),
-            LocalTime.of(13, 0),
+            LocalDateTime.of(now, LocalTime.of(9, 0)),
+            LocalDateTime.of(now, LocalTime.of(13, 0)),
             462,
             30,
             240,
             30);
 
     assertThat(ranges).hasSize(2);
-    assertThat(ranges.get(0).getStart()).isEqualTo(LocalTime.of(9, 0));
-    assertThat(ranges.get(0).getEnd()).isEqualTo(LocalTime.of(13, 0));
-    assertThat(ranges.get(1).getStart()).isEqualTo(LocalTime.of(13, 30));
-    assertThat(ranges.get(1).getEnd()).isEqualTo(LocalTime.of(17, 12));
+    assertThat(ranges.get(0).getStart()).isEqualTo(LocalDateTime.of(now, LocalTime.of(9, 0)));
+    assertThat(ranges.get(0).getEnd()).isEqualTo(LocalDateTime.of(now, LocalTime.of(13, 0)));
+    assertThat(ranges.get(1).getStart()).isEqualTo(LocalDateTime.of(now, LocalTime.of(13, 30)));
+    assertThat(ranges.get(1).getEnd()).isEqualTo(LocalDateTime.of(now, LocalTime.of(17, 12)));
 
     //Assert that the total time worked is 462 minutes
     long totalMinutes = ranges.stream().mapToLong(range -> ChronoUnit.MINUTES.between(range.getStart(), range.getEnd())).sum();
@@ -78,22 +83,23 @@ class RangesCalculatorTest {
 
   @Test
   void rangeCalculatorEvenly3() {
-    List<Range> ranges =
+    LocalDate now = LocalDate.now();
+    List<HoursRangeDetailsInnerRange> ranges =
         this.rangesCalculator.rangeCalculator(
-            LocalTime.of(9, 0),
-            LocalTime.of(10, 0),
+            LocalDateTime.of(now, LocalTime.of(9, 0)),
+            LocalDateTime.of(now, LocalTime.of(10, 0)),
             462,
             60,
             240,
             30);
 
     assertThat(ranges).hasSize(3);
-    assertThat(ranges.get(0).getStart()).isEqualTo(LocalTime.of(9, 0));
-    assertThat(ranges.get(0).getEnd()).isEqualTo(LocalTime.of(10, 0));
-    assertThat(ranges.get(1).getStart()).isEqualTo(LocalTime.of(11, 0));
-    assertThat(ranges.get(1).getEnd()).isEqualTo(LocalTime.of(15, 0));
-    assertThat(ranges.get(2).getStart()).isEqualTo(LocalTime.of(15, 30));
-    assertThat(ranges.get(2).getEnd()).isEqualTo(LocalTime.of(18, 12));
+    assertThat(ranges.get(0).getStart()).isEqualTo(LocalDateTime.of(now, LocalTime.of(9, 0)));
+    assertThat(ranges.get(0).getEnd()).isEqualTo(LocalDateTime.of(now, LocalTime.of(10, 0)));
+    assertThat(ranges.get(1).getStart()).isEqualTo(LocalDateTime.of(now, LocalTime.of(11, 0)));
+    assertThat(ranges.get(1).getEnd()).isEqualTo(LocalDateTime.of(now, LocalTime.of(15, 0)));
+    assertThat(ranges.get(2).getStart()).isEqualTo(LocalDateTime.of(now, LocalTime.of(15, 30)));
+    assertThat(ranges.get(2).getEnd()).isEqualTo(LocalDateTime.of(now, LocalTime.of(18, 12)));
 
     //Assert that the total time worked is 462 minutes
     long totalMinutes = ranges.stream().mapToLong(range -> ChronoUnit.MINUTES.between(range.getStart(), range.getEnd())).sum();

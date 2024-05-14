@@ -44,7 +44,7 @@ shift $((OPTIND -1))
 uri="http://localhost:8384/ranges"
 
 if [ -n "$start" ] && [ -n "$lunch" ]; then
-    uri+="WithStartLunchAndMinutesOfLunchBreak/$start/$lunch/$minutesOfLunchBreak"
+    uri+="With/$start/$lunch/$minutesOfLunchBreak"
 elif [ -n "$minutesOfLunchBreak" ]; then
     uri+="/$minutesOfLunchBreak"
 fi
@@ -56,10 +56,10 @@ response=$(curl -s $uri)
 json=$(echo $response | jq '.')
 
 #Print column headers
-echo "Start    End      Duration Duration in Hours"
+echo "Start End   Duration Duration in Hours"
 
 # Display the rangeDetails array in a table format with separate columns for start and end times
-echo $json | jq -r '.rangeDetails[] | "\(.range.start) \(.range.end) \(.duration)    \(.durationInHours)"'
+echo $json | jq -r '.rangeDetails[] | "\(.range.start | sub(".+T"; "") | sub(":00$"; "")) \(.range.end | sub(".+T"; "") | sub(":00$"; "")) \(.duration)    \(.durationInHours)"'
 
 echo "---------------------------------------------"
 # Display the remaining data with labels
