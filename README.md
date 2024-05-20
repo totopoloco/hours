@@ -129,6 +129,12 @@ The project is structured in the following way:
 - `src/main/resources`: Contains the application (to customize the port).
 - `src/test/java`: Contains the unit tests.
 
+## Schema validation
+The project uses the [com.networknt:json-schema-validator](https://github.com/networknt/json-schema-validator) library to validate the JSON schema of the REST API. 
+The schema is located in the `src/main/resources/schemas` directory.
+On every request, the schema is validated against the response body.
+This double-check ensures that the response body is always valid against the schema.
+
 # How to contribute
 If you want to contribute to this project, you can fork the repository and create a pull request with your changes. I
 will review the changes and merge them if they are appropriate.

@@ -12,10 +12,16 @@
             "type": "object",
             "properties": {
               "start": {
-                "type": "string"
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
               },
               "end": {
-                "type": "string"
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
               }
             },
             "required": [
@@ -27,7 +33,7 @@
             "type": "string"
           },
           "durationInHours": {
-            "type": "string"
+            "type": "number"
           }
         },
         "required": [
@@ -38,13 +44,17 @@
       }
     },
     "totalHours": {
-      "type": "string"
+      "type": "number"
     },
     "totalHoursInHHMM": {
       "type": "string"
     },
     "expectedLunchTimeInHHMM": {
       "type": "string"
+    },
+    "extraComments": {
+      "type": "object",
+      "format": "string"
     }
   },
   "required": [

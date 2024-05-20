@@ -17,7 +17,7 @@ class SchemaValidatorTest {
   @Test
   void testSchema() {
     // Load the schema
-    InputStream schemaStream = SchemaValidator.class.getResourceAsStream("/schemas/rangeSchema.json");
+    InputStream schemaStream = SchemaValidator.class.getResourceAsStream("/schemas/hours-schema.json");
 
     if (isNull(schemaStream)) {
       throw new AssertionError("Schema stream is null.");
@@ -29,29 +29,7 @@ class SchemaValidatorTest {
 
     JSONObject sampleJson = new JSONObject(
         """
-                {
-                    "rangeDetails": [
-                        {
-                            "range": {
-                                "start": "08:19:00",
-                                "end": "12:19:00"
-                            },
-                            "duration": "04:00",
-                            "durationInHours": "4.00"
-                        },
-                        {
-                            "range": {
-                                "start": "12:49:00",
-                                "end": "16:31:00"
-                            },
-                            "duration": "03:42",
-                            "durationInHours": "3.70"
-                        }
-                    ],
-                    "totalHours": "7.70",
-                    "totalHoursInHHMM": "07:42",
-                    "expectedLunchTimeInHHMM": "14:44"
-                }
+                {"rangeDetails":[{"range":{"start":[2024,5,20,9,47],"end":[2024,5,20,12,54]},"duration":"03:07","durationInHours":3.12},{"range":{"start":[2024,5,20,13,24],"end":[2024,5,20,17,24]},"duration":"04:00","durationInHours":4},{"range":{"start":[2024,5,20,17,54],"end":[2024,5,20,18,29]},"duration":"00:35","durationInHours":0.58}],"totalHours":7.7,"totalHoursInHHMM":"07:42","expectedLunchTimeInHHMM":"12:54","extraComments":{"empty":true,"present":false}}
             """);
 
     // Validate the sample JSON against the schema

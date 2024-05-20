@@ -5,7 +5,7 @@ servers:
 info:
   title: Hours API
   description: This API provides endpoints for managing hours
-  version: "<version>"
+  version: "a488148"
   contact:
     name: Marco T. Ávila Cerón
     email: marcotavilac@pm.me
@@ -38,8 +38,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Hours'
-        '404':
-          description: Hours not found
+        '500':
+          description: Response validation failed or internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hours'
   /rangesWith/{start}/{lunch}/{breakInMinutes}:
     get:
       tags:
@@ -113,6 +117,8 @@ components:
         totalHoursInHHMM:
           type: string
         expectedLunchTimeInHHMM:
+          type: string
+        extraComments:
           type: string
       required:
         - rangeDetails

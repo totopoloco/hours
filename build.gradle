@@ -70,6 +70,10 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.5.0'
     implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
     annotationProcessor 'io.swagger.core.v3:swagger-annotations:2.2.21'
+
+    //Schema validation
+    // https://mvnrepository.com/artifact/com.networknt/json-schema-validator
+    implementation 'com.networknt:json-schema-validator:1.4.0'
 }
 
 tasks.named('test') {
@@ -119,12 +123,19 @@ jib {
         }
     }
 
-    extraDirectories.paths {
-        path {
-            setFrom(sourceSets.main.resources.srcDirs.find { it.name == 'resources' }.toString() + "/schemas/")
-            into = "/app/schemas"
-        }
-    }
+    // Add the extra directories to the container
+    // This will copy the schemas directory to the /app/schemas directory in the container
+    // Uncomment this block if you need to copy additional directories to the container
+
+    // ---------------------------------------------
+    //    extraDirectories.paths {
+    //        path {
+    //            setFrom(sourceSets.main.resources.srcDirs.find { it.name == 'resources' }.toString() + "/schemas/")
+    //            into = "/app/schemas"
+    //        }
+    //    }
+    // ---------------------------------------------
+
 }
 
 openApiValidate {
