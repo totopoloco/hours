@@ -19,6 +19,7 @@ public class RangesService {
 
   private final RangesCalculator rangesCalculator;
   private final TimeUtilitiesService timeUtilitiesService;
+  private final HoursConfiguration hoursConfiguration;
 
   public List<HoursRangeDetailsInnerRange> calculateRanges(final Integer minutesOfLunchBreak,
                                                            final int entry,
@@ -27,14 +28,14 @@ public class RangesService {
     return this.rangesCalculator.rangeCalculator(
             LocalDateTime.of(LocalDate.now(), LocalTime.of(entry, entryMinute)),
             lunchBreakStart,
-            462,
+            this.hoursConfiguration.getMinutesPerDayOfWork(),
             this.timeUtilitiesService.getMinutesOfLunchBreakParameter(minutesOfLunchBreak),
-            240,
-            30);
+            this.hoursConfiguration.getMaximumMinutesInARow(),
+            this.hoursConfiguration.getMinutesToRestBetweenRows());
   }
 
-  public Hours buildResponse(List<HoursRangeDetailsInnerRange> ranges, long totalMinutes, long hours, long minutes,
-                             LocalTime lunchBreakStart) {
+  public Hours buildRoot(List<HoursRangeDetailsInnerRange> ranges, long totalMinutes, long hours, long minutes,
+                         LocalTime lunchBreakStart) {
     final Hours hoursResponse = new Hours();
     hoursResponse.setRangeDetails(buildDetails(ranges));
     hoursResponse.setTotalHours(TimeUtilities.convertFromMinutesToHours(totalMinutes));

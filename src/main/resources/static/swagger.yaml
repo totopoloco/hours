@@ -5,7 +5,7 @@ servers:
 info:
   title: Hours API
   description: This API provides endpoints for managing hours
-  version: "0f46588"
+  version: "c9c73eb"
   contact:
     name: Marco T. Ávila Cerón
     email: marcotavilac@pm.me
