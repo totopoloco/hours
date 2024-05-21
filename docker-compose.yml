@@ -2,7 +2,7 @@ services:
   hours:
     image: totopo/hours:latest
     environment:
-      - HOURS_MINUTES_PER_DAY_OF_WORK=480
+      - HOURS_MINUTES_PER_DAY_OF_WORK=462
       - HOURS_MAXIMUM_MINUTES_IN_A_ROW=240
       - HOURS_MINUTES_TO_REST_BETWEEN_ROWS=30
     restart: always

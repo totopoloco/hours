@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 public class HoursConfiguration {
-  @Value("${HOURS_MINUTES_PER_DAY_OF_WORK:480}")
+  @Value("${HOURS_MINUTES_PER_DAY_OF_WORK:462}")
   private int minutesPerDayOfWork;
   @Value("${HOURS_MAXIMUM_MINUTES_IN_A_ROW:240}")
   private int maximumMinutesInARow;
