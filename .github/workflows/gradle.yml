@@ -42,6 +42,9 @@ jobs:
       - name: Sets permissions to run gradlew
         run: chmod a+x gradlew
 
+      - name: Print classpath
+        run: ./gradlew -q printClasspath
+
       - name: Build with Gradle Wrapper
         run: ./gradlew --info build
 
