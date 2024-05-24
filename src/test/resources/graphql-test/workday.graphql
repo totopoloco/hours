@@ -1,0 +1,13 @@
+query MyQuery {
+    workDay(lunchDuration: 30, lunchStart: 13, start: 9) {
+        periods {
+            duration
+            durationInHours
+            end
+            start
+        }
+        expectedLunchTimeInHHMM
+        totalHours
+        totalHoursInHHMM
+    }
+}
