@@ -1,5 +1,5 @@
-query WorkDay {
-    workDay(lunchDuration: 30, lunchStart: 13, start: 9) {
+query WorkDay($start: Int!, $lunchStart: Int!, $lunchDuration: Int!) {
+    workDay(start: $start, lunchStart: $lunchStart, lunchDuration: $lunchDuration) {
         periods {
             duration
             durationInHours

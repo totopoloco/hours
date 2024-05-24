@@ -189,11 +189,6 @@ sourceSets {
             srcDirs = ['src/main/java', "$buildDir/generate-resources/src/main/java"]
         }
     }
-    test {
-        resources {
-            srcDir 'src/test/resources'
-        }
-    }
 }
 
 import org.ajoberstar.grgit.Grgit
@@ -225,7 +220,4 @@ task printClassPath {
     }
 }
 
-tasks.withType(Copy) {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
 compileJava.dependsOn tasks.named('openApiGenerate')
