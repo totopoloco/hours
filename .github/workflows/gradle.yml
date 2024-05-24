@@ -51,9 +51,9 @@ jobs:
       - name: JIB container build and publish
         run: |
           if [[ "${{ github.event_name }}" == "create" ]]; then
-            ./gradlew jib --image=totopo/hours:${GITHUB_REF##*/}
+            ./gradlew -q jib --image=totopo/hours:${GITHUB_REF##*/}
           else
-            ./gradlew jib --image=totopo/hours:latest
+            ./gradlew -q jib --image=totopo/hours:latest
           fi
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
