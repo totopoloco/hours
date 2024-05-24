@@ -5,18 +5,16 @@ import at.mavila.hours.ranges.api.RangesWithApi;
 import at.mavila.hours.ranges.model.Hours;
 import at.mavila.hours.ranges.model.HoursRangeDetailsInnerRange;
 import jakarta.annotation.PreDestroy;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor(onConstructor_ = @Autowired)
@@ -26,6 +24,7 @@ public class RangesController implements RangesApi, RangesWithApi {
   private final RangesService rangesService;
   private final TimeRandomizer timeRandomizer;
   private final ValidatorService validatorService;
+  private final TimeUtilitiesService timeUtilitiesService;
 
   static {
     DECIMAL_FORMAT = ThreadLocal.withInitial(() -> new DecimalFormat("0.00"));
@@ -63,7 +62,7 @@ public class RangesController implements RangesApi, RangesWithApi {
             this.rangesService.calculateRanges(breakInMinutes, entry, entryMinute, LocalDateTime.of(LocalDate.now(), lunchBreakStart));
 
     //Calculate total minutes
-    final long totalMinutes = getTotalMinutes(ranges);
+    final long totalMinutes = this.timeUtilitiesService.getTotalMinutes(ranges);
     final long hours = totalMinutes / 60;   // since both are ints, you get an int
     final long minutes = totalMinutes % 60;
 
@@ -75,9 +74,6 @@ public class RangesController implements RangesApi, RangesWithApi {
             : getErrorsHoursResponseEntity(hoursResponse);
   }
 
-  private static long getTotalMinutes(List<HoursRangeDetailsInnerRange> ranges) {
-    return ranges.stream().mapToLong(range -> ChronoUnit.MINUTES.between(range.getStart(), range.getEnd())).sum();
-  }
 
   private static ResponseEntity<Hours> getErrorsHoursResponseEntity(final Hours hoursResponse) {
     return ResponseEntity.internalServerError().body(hoursResponse);

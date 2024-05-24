@@ -123,6 +123,47 @@ The output will be a Json object with the following output:
 ```
 Entry and lunch break times are randomly generated, so the output will be different each time you run the script.
 
+# GraphQL
+
+Support for GraphQL has been added to the application. The GraphQL playground can be accessed at the following URL:
+[http://localhost:8384/graphiql](http://localhost:8384/graphiql).
+
+Two queries are available:
+
+```graphql
+query WorkDayQuery {
+  workDay(start: 9, lunchStart: 13, lunchDuration: 30) {
+    periods {
+      start
+      end
+      duration
+      durationInHours
+    }
+    totalHours
+    totalHoursInHHMM
+    expectedLunchTimeInHHMM
+  }
+}
+```
+
+Random values are generated if no parameters are provided:
+
+```graphql
+query WorkDayQuery {
+  defaultWorkDay {
+    periods {
+      start
+      end
+      duration
+      durationInHours
+    }
+    totalHours
+    totalHoursInHHMM
+    expectedLunchTimeInHHMM
+  }
+}
+```
+
 # For developers
 The project is structured in the following way:
 - `src/main/java`: Contains the Java source code.

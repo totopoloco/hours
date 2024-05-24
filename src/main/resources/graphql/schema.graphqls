@@ -1,0 +1,18 @@
+type Query {
+    workDay(start: Int!, lunchStart: Int!, lunchDuration: Int!): WorkDay
+    defaultWorkDay: WorkDay
+}
+
+type WorkPeriod {
+    start: String!
+    end: String!
+    duration: String!
+    durationInHours: Float!
+}
+
+type WorkDay {
+    periods: [WorkPeriod!]!
+    totalHours: Float!
+    totalHoursInHHMM: String!
+    expectedLunchTimeInHHMM: String!
+}
