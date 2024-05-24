@@ -1,4 +1,4 @@
-query MyQuery {
+query WorkDay {
     workDay(lunchDuration: 30, lunchStart: 13, start: 9) {
         periods {
             duration
