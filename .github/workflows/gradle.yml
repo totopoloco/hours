@@ -43,7 +43,7 @@ jobs:
         run: chmod a+x gradlew
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew --scan --debug build
+        run: ./gradlew --info build
 
       - name: JIB container build and publish
         run: |
