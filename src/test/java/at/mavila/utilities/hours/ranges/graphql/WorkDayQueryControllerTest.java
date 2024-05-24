@@ -1,7 +1,10 @@
-package at.mavila.utilities.hours.ranges;
+package at.mavila.utilities.hours.ranges.graphql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import at.mavila.utilities.hours.ranges.RangesService;
+import at.mavila.utilities.hours.ranges.TimeRandomizer;
+import at.mavila.utilities.hours.ranges.TimeUtilitiesService;
 import java.math.BigDecimal;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.Test;
