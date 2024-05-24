@@ -46,7 +46,7 @@ jobs:
         run: ./gradlew -q printClasspath
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew --info build
+        run: ./gradlew -q build
 
       - name: JIB container build and publish
         run: |
