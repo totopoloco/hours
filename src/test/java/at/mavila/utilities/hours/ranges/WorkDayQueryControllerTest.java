@@ -29,7 +29,7 @@ class WorkDayQueryControllerTest {
 
   @Test
   void shouldHaveTotalHoursNotNull() {
-    GraphQlTester.Response defaultWorkDay = this.graphQlTester.documentName("workDay")
+    GraphQlTester.Response defaultWorkDay = this.graphQlTester.documentName("workday")
         .variable("start", 9)
         .variable("lunchStart", 12)
         .variable("lunchDuration", 30)
