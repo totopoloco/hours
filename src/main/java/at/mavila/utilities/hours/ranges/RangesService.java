@@ -3,15 +3,15 @@ package at.mavila.utilities.hours.ranges;
 import at.mavila.hours.ranges.model.Hours;
 import at.mavila.hours.ranges.model.HoursRangeDetailsInner;
 import at.mavila.hours.ranges.model.HoursRangeDetailsInnerRange;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -41,6 +41,7 @@ public class RangesService {
     hoursResponse.setTotalHours(TimeUtilities.convertFromMinutesToHours(totalMinutes));
     hoursResponse.setTotalHoursInHHMM(String.format("%02d:%02d", hours, minutes));
     hoursResponse.setExpectedLunchTimeInHHMM(lunchBreakStart.toString());
+    hoursResponse.setExtraComments(Optional.of("OK"));
     return hoursResponse;
   }
 

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,14 +69,16 @@ public class RangesController implements RangesApi, RangesWithApi {
 
     final Hours hoursResponse = this.rangesService.buildRoot(ranges, totalMinutes, hours, minutes, lunchBreakStart);
 
-    return StringUtils.isEmpty(this.validatorService.validateAgainstSchema(hoursResponse))//Double check if the response
+    CharSequence errors = this.validatorService.validateAgainstSchema(hoursResponse);
+    return StringUtils.isEmpty(errors)//Double check if the response
             // is valid given the schema
             ? ResponseEntity.ok(hoursResponse)
-            : getErrorsHoursResponseEntity(hoursResponse);
+        : getErrorsHoursResponseEntity(hoursResponse, errors);
   }
 
 
-  private static ResponseEntity<Hours> getErrorsHoursResponseEntity(final Hours hoursResponse) {
+  private static ResponseEntity<Hours> getErrorsHoursResponseEntity(final Hours hoursResponse, final CharSequence errors) {
+    hoursResponse.setExtraComments(Optional.of(errors.toString()));
     return ResponseEntity.internalServerError().body(hoursResponse);
   }
 
