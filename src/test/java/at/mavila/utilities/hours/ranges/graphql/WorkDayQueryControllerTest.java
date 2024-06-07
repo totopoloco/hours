@@ -42,5 +42,9 @@ class WorkDayQueryControllerTest {
     assertThat(path.hasValue()).isNotNull();
     assertThat(path.entity(BigDecimal.class).get()).isNotNull()
         .isCloseTo(BigDecimal.valueOf(7.7D), Percentage.withPercentage(0.1D));
+
+
+    GraphQlTester.Path path1 = defaultWorkDay.path("workDay.totalMinutes");
+    assertThat(path1).isNotNull();
   }
 }

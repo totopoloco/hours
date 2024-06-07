@@ -3,6 +3,10 @@ type Query {
     defaultWorkDay: WorkDay
 }
 
+type Subscription {
+    defaultWorkDay: WorkDay
+}
+
 type WorkPeriod {
     start: String!
     end: String!
