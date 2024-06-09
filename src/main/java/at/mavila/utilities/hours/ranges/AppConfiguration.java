@@ -35,6 +35,7 @@ public class AppConfiguration {
       log.info("Minutes Per Day Of Work: {}", this.hoursConfiguration.getMinutesPerDayOfWork());
       log.info("Maximum Minutes In A Row: {}", this.hoursConfiguration.getMaximumMinutesInARow());
       log.info("Minutes To Rest Between Rows: {}", this.hoursConfiguration.getMinutesToRestBetweenRows());
+      log.info("Cron For Ticking: {}", this.hoursConfiguration.getCronForTicking());
     };
   }
 

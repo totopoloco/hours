@@ -5,6 +5,7 @@ services:
       - HOURS_MINUTES_PER_DAY_OF_WORK=462
       - HOURS_MAXIMUM_MINUTES_IN_A_ROW=240
       - HOURS_MINUTES_TO_REST_BETWEEN_ROWS=30
+      - CRON_FOR_TICKING=*/10 * * * * *
     restart: always
     ports:
       - "8384:8384"

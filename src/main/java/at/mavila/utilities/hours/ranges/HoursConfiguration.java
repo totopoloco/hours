@@ -20,4 +20,6 @@ public class HoursConfiguration {
   private int maximumMinutesInARow;
   @Value("${HOURS_MINUTES_TO_REST_BETWEEN_ROWS:30}")
   private int minutesToRestBetweenRows;
+  @Value("${CRON_FOR_TICKING:*/10 * * * * *}")
+  private String cronForTicking;
 }

@@ -1,5 +1,6 @@
 package at.mavila.utilities.hours.ranges.graphql;
 
+import at.mavila.utilities.hours.ranges.HoursConfiguration;
 import at.mavila.utilities.hours.ranges.TimeRandomizer;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +18,16 @@ public class WorkDaySubscriptionController {
   private final WorkDayController workDayController;
   private final TimeRandomizer timeRandomizer;
   private final Sinks.Many<WorkDay> sink;
+  private final HoursConfiguration hoursConfiguration;
 
   public WorkDaySubscriptionController(
       final WorkDayController workDayController,
-      final TimeRandomizer timeRandomizer
+      final TimeRandomizer timeRandomizer,
+      final HoursConfiguration hoursConfiguration
   ) {
     this.workDayController = workDayController;
     this.timeRandomizer = timeRandomizer;
+    this.hoursConfiguration = hoursConfiguration;
     this.sink = Sinks.many().multicast().onBackpressureBuffer();
   }
 
@@ -32,7 +36,7 @@ public class WorkDaySubscriptionController {
     return this.workDayController.workDay(start, lunchStart, LUNCH_DURATION);
   }
 
-  @Scheduled(cron = "0 0/1 * * * *") // every minute
+  @Scheduled(cron = "#{hoursConfiguration.cronForTicking}") // every 10 seconds after the minute
   public void generateWorkDay() {
 
     final WorkDay workDay = workDay(
