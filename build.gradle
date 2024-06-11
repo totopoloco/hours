@@ -223,4 +223,13 @@ task printClassPath {
     }
 }
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 compileJava.dependsOn tasks.named('openApiGenerate')
