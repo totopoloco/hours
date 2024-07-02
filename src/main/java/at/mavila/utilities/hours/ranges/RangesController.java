@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RangesController implements RangesApi, RangesWithApi {
 
   private static final ThreadLocal<DecimalFormat> DECIMAL_FORMAT;
+  private static final String WORKING_AFTER_20_00;
   private final RangesService rangesService;
   private final TimeRandomizer timeRandomizer;
   private final ValidatorService validatorService;
@@ -29,6 +31,7 @@ public class RangesController implements RangesApi, RangesWithApi {
 
   static {
     DECIMAL_FORMAT = ThreadLocal.withInitial(() -> new DecimalFormat("0.00"));
+    WORKING_AFTER_20_00 = "No ranges calculated, are you working after 20:00?";
   }
 
   @Override
@@ -60,7 +63,9 @@ public class RangesController implements RangesApi, RangesWithApi {
                                                        final int entryMinute) {
     final LocalTime lunchBreakStart = LocalTime.of(lunch, lunchMinute);
     final List<HoursRangeDetailsInnerRange> ranges =
-            this.rangesService.calculateRanges(breakInMinutes, entry, entryMinute, LocalDateTime.of(LocalDate.now(), lunchBreakStart));
+        this.rangesService.calculateRanges(breakInMinutes, entry, entryMinute,
+            LocalDateTime.of(LocalDate.now(), lunchBreakStart));
+
 
     //Calculate total minutes
     final long totalMinutes = this.timeUtilitiesService.getTotalMinutes(ranges);
@@ -69,10 +74,14 @@ public class RangesController implements RangesApi, RangesWithApi {
 
     final Hours hoursResponse = this.rangesService.buildRoot(ranges, totalMinutes, hours, minutes, lunchBreakStart);
 
+    if (CollectionUtils.isEmpty(ranges)) {
+      return getErrorsHoursResponseEntity(hoursResponse, WORKING_AFTER_20_00);
+    }
+
     CharSequence errors = this.validatorService.validateAgainstSchema(hoursResponse);
     return StringUtils.isEmpty(errors)//Double check if the response
-            // is valid given the schema
-            ? ResponseEntity.ok(hoursResponse)
+        // is valid given the schema
+        ? ResponseEntity.ok(hoursResponse)
         : getErrorsHoursResponseEntity(hoursResponse, errors);
   }
 

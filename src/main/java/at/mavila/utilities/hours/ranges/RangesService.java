@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -17,21 +18,33 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class RangesService {
 
+  private static final LocalTime WORK_HOUR_THRESHOLD;
   private final RangesCalculator rangesCalculator;
   private final TimeUtilitiesService timeUtilitiesService;
   private final HoursConfiguration hoursConfiguration;
 
-  public List<HoursRangeDetailsInnerRange> calculateRanges(final Integer minutesOfLunchBreak,
-                                                           final int entry,
-                                                           final int entryMinute,
-                                                           final LocalDateTime lunchBreakStart) {
-    return this.rangesCalculator.rangeCalculator(
+  static {
+    WORK_HOUR_THRESHOLD = LocalTime.of(20, BigDecimal.ZERO.intValue());
+  }
+
+  public List<HoursRangeDetailsInnerRange> calculateRanges(final Integer minutesOfLunchBreak, final int entry,
+                                                           final int entryMinute, final LocalDateTime lunchBreakStart) {
+    List<HoursRangeDetailsInnerRange> ranges =
+        this.rangesCalculator.rangeCalculator(
             LocalDateTime.of(LocalDate.now(), LocalTime.of(entry, entryMinute)),
             lunchBreakStart,
             this.hoursConfiguration.getMinutesPerDayOfWork(),
             this.timeUtilitiesService.getMinutesOfLunchBreakParameter(minutesOfLunchBreak),
             this.hoursConfiguration.getMaximumMinutesInARow(),
             this.hoursConfiguration.getMinutesToRestBetweenRows());
+
+    if (ranges.stream().anyMatch(range -> {
+      final LocalTime start = range.getStart().toLocalTime();
+      return start.isAfter(WORK_HOUR_THRESHOLD);
+    })) {
+      return Collections.emptyList();
+    }
+    return ranges;
   }
 
   public Hours buildRoot(List<HoursRangeDetailsInnerRange> ranges, long totalMinutes, long hours, long minutes,

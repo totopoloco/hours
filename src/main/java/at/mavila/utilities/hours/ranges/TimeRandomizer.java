@@ -1,6 +1,9 @@
 package at.mavila.utilities.hours.ranges;
 
+import static java.util.List.of;
+
 import jakarta.annotation.PreDestroy;
+import java.util.List;
 import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,7 +17,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class TimeRandomizer {
 
-  private static final ThreadLocal<Random> RANDOM = ThreadLocal.withInitial(Random::new);
+  private static final List<Integer> QUARTERS;
+  private static final ThreadLocal<Random> RANDOM;
+
+  static {
+    QUARTERS = of(0, 15, 30, 45);
+    RANDOM = ThreadLocal.withInitial(Random::new);
+  }
 
   /**
    * Randomizes the entry time between 8:00 and 10:00
@@ -31,7 +40,7 @@ public class TimeRandomizer {
    * @return the randomized minute in the hour, between 0 and 59
    */
   public int randomizeMinuteInHour() {
-    return RANDOM.get().nextInt(60);
+    return QUARTERS.get(RANDOM.get().nextInt(QUARTERS.size()));
   }
 
   /**
