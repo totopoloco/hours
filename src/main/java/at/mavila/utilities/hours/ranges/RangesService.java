@@ -27,8 +27,10 @@ public class RangesService {
     WORK_HOUR_THRESHOLD = LocalTime.of(20, BigDecimal.ZERO.intValue());
   }
 
-  public List<HoursRangeDetailsInnerRange> calculateRanges(final Integer minutesOfLunchBreak, final int entry,
-                                                           final int entryMinute, final LocalDateTime lunchBreakStart) {
+  public List<HoursRangeDetailsInnerRange> calculateRanges(final Integer minutesOfLunchBreak,
+                                                           final int entry,
+                                                           final int entryMinute,
+                                                           final LocalDateTime lunchBreakStart) {
     List<HoursRangeDetailsInnerRange> ranges =
         this.rangesCalculator.rangeCalculator(
             LocalDateTime.of(LocalDate.now(), LocalTime.of(entry, entryMinute)),
